@@ -1,10 +1,12 @@
 package ru.aegorova.simbirsoftproject.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.Book;
 import ru.aegorova.simbirsoftproject.services.BookService;
+import ru.aegorova.simbirsoftproject.utils.Views;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/all")
+    @JsonView(Views.Internal.class)
     public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(Book.books);
     }
@@ -26,6 +29,7 @@ public class BookController {
     }
 
     @PostMapping("/add")
+    @JsonView(Views.Public.class)
     public ResponseEntity<List<Book>> addBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.addBook(book));
     }

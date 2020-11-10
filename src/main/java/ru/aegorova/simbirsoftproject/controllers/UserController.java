@@ -1,10 +1,12 @@
 package ru.aegorova.simbirsoftproject.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.User;
 import ru.aegorova.simbirsoftproject.services.UserService;
+import ru.aegorova.simbirsoftproject.utils.Views;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
+    @JsonView(Views.Internal.class)
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(User.users);
     }
@@ -26,6 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
+    @JsonView(Views.Public.class)
     public ResponseEntity<List<User>> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
