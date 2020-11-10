@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/users/add
+Content-Type: application/json
+
+{
+  "name" : "name",
+  "surname": "surname",
+  "patronymic": "patronymic",
+  "dateOfBirth": "2020-10-10"
+}
+
+###
+
+GET http://localhost:8080/api/users/Nastya
+
+###
+
+GET http://localhost:8080/api/users/all
+
+###
+
+DELETE http://localhost:8080/api/users/delete?name=name&surname=surname&patronymic=patronymic
