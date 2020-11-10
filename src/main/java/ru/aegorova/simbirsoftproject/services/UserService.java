@@ -1,7 +1,6 @@
 package ru.aegorova.simbirsoftproject.services;
 
 import org.springframework.stereotype.Service;
-import ru.aegorova.simbirsoftproject.dto.Book;
 import ru.aegorova.simbirsoftproject.dto.User;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class UserService {
         return User.users;
     }
 
-    public List<User> getUsersByName(String name){
+    public List<User> getUsersByName(String name) {
         return User.users.stream().filter(user -> user.getName().equals(name)).collect(Collectors.toList());
     }
 

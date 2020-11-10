@@ -16,24 +16,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(User.users);
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<List<User>> getUserByName(@PathVariable String name){
+    public ResponseEntity<List<User>> getUserByName(@PathVariable String name) {
         return ResponseEntity.ok(userService.getUsersByName(name));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<User>> addUser(@RequestBody User user){
+    public ResponseEntity<List<User>> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestParam String name
             , @RequestParam String surname
-            , @RequestParam String patronymic){
+            , @RequestParam String patronymic) {
         userService.deleteUser(name, surname, patronymic);
         return ResponseEntity.ok().build();
     }

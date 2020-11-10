@@ -1,7 +1,6 @@
 package ru.aegorova.simbirsoftproject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.Book;
@@ -17,22 +16,22 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getAllBooks(){
+    public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(Book.books);
     }
 
     @GetMapping("/{author}")
-    public ResponseEntity<List<Book>> getBookByTitle(@PathVariable String author){
+    public ResponseEntity<List<Book>> getBookByTitle(@PathVariable String author) {
         return ResponseEntity.ok(bookService.getBooksByAuthor(author));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<Book>> addBook(@RequestBody Book book){
+    public ResponseEntity<List<Book>> addBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.addBook(book));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteBook(@RequestParam String author, @RequestParam String title){
+    public ResponseEntity<?> deleteBook(@RequestParam String author, @RequestParam String title) {
         bookService.deleteBook(author, title);
         return ResponseEntity.ok().build();
     }

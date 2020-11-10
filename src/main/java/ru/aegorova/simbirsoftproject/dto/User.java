@@ -1,7 +1,9 @@
 package ru.aegorova.simbirsoftproject.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private String name;
     private String surname;
