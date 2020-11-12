@@ -29,7 +29,7 @@ public class UserControllerTest {
 
     @Test
     public void getUserByNameTest() throws Exception {
-        mockMvc.perform(get("/api/users/Nastya"))
+        mockMvc.perform(get("/api/users/getByName/Nastya"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*].name"
                         , hasItem("Nastya")));

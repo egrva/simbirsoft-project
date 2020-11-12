@@ -29,7 +29,7 @@ public class BookControllerTest {
 
     @Test
     public void getBookByTitleTest() throws Exception {
-        mockMvc.perform(get("/api/books/Fyodor Dostoyevski"))
+        mockMvc.perform(get("/api/books/getByAuthor/Fyodor Dostoyevski"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*].author"
                         , hasItem("Fyodor Dostoyevski")));

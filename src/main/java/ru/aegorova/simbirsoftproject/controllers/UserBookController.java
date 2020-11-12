@@ -19,7 +19,7 @@ public class UserBookController {
     private UserBookService userBookService;
 
     @PostMapping("/add")
-    public ResponseEntity<List<UserBook>> addUserBook(@RequestBody UserBook userBook) {
-        return ResponseEntity.ok(userBookService.addUserBook(userBook));
+    public List<UserBook> addUserBook(@RequestBody UserBook userBook) {
+        return userBookService.addUserBook(userBook);
     }
 }

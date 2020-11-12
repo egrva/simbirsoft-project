@@ -33,6 +33,4 @@ public class UserBook {
     )
     private ZonedDateTime dateTime;
 
-    public static List<UserBook> userBooks = new ArrayList<>();
-
 }

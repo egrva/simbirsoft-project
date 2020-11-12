@@ -19,19 +19,19 @@ public class UserController {
 
     @GetMapping("/all")
     @JsonView(Views.Internal.class)
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(User.users);
+    public List<User> getAllUsers() {
+        return UserService.users;
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<List<User>> getUserByName(@PathVariable String name) {
-        return ResponseEntity.ok(userService.getUsersByName(name));
+    @GetMapping("/getByName/{name}")
+    public List<User> getUserByName(@PathVariable String name) {
+        return userService.getUsersByName(name);
     }
 
     @PostMapping("/add")
     @JsonView(Views.Public.class)
-    public ResponseEntity<List<User>> addUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.addUser(user));
+    public List<User> addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @DeleteMapping("/delete")

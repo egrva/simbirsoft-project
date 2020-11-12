@@ -34,24 +34,4 @@ public class User {
     @NotNull(message = "User's date of birth cannot be null")
     private LocalDate dateOfBirth;
 
-    public static List<User> users = new ArrayList<User>() {{
-        add(User.builder()
-                .name("Nastya")
-                .surname("Egorova")
-                .patronymic("Andreevna")
-                .dateOfBirth(LocalDate.of(1999, 12, 16))
-                .build());
-        add(User.builder()
-                .name("Katya")
-                .surname("Mitrofanova")
-                .patronymic("Vladimirovna")
-                .dateOfBirth(LocalDate.of(1999, 11, 23))
-                .build());
-        add(User.builder()
-                .name("Masha")
-                .surname("Ivanova")
-                .patronymic("Dmitrievna")
-                .dateOfBirth(LocalDate.of(1999, 10, 13))
-                .build());
-    }};
 }

@@ -29,21 +29,5 @@ public class Book {
     @NotNull(message = "Book's genre cannot be null")
     private String genre;
 
-    public static List<Book> books = new ArrayList<Book>() {{
-        add(Book.builder()
-                .author("Fyodor Dostoyevski")
-                .title("Crime and Punishment")
-                .genre("Philosophical novel")
-                .build());
-        add(Book.builder()
-                .author("Ivan Turgenev")
-                .title("Fathers and Sons")
-                .genre("romance")
-                .build());
-        add(Book.builder()
-                .author("Leo Tolstoy")
-                .title("War and Peace")
-                .genre("Historical novel")
-                .build());
-    }};
+
 }

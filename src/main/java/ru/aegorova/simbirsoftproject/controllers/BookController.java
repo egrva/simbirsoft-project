@@ -19,19 +19,19 @@ public class BookController {
 
     @GetMapping("/all")
     @JsonView(Views.Internal.class)
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(Book.books);
+    public List<Book> getAllBooks() {
+        return BookService.books;
     }
 
-    @GetMapping("/{author}")
-    public ResponseEntity<List<Book>> getBookByTitle(@PathVariable String author) {
-        return ResponseEntity.ok(bookService.getBooksByAuthor(author));
+    @GetMapping("/getByAuthor/{author}")
+    public List<Book> getBookByTitle(@PathVariable String author) {
+        return bookService.getBooksByAuthor(author);
     }
 
     @PostMapping("/add")
     @JsonView(Views.Public.class)
-    public ResponseEntity<List<Book>> addBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.addBook(book));
+    public List<Book> addBook(@RequestBody Book book) {
+        return bookService.addBook(book);
     }
 
     @DeleteMapping("/delete")
