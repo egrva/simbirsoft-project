@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/books/add
+Content-Type: application/json
+
+{
+  "title": "And Quiet Flows the Don",
+  "author": "Mikhail Aleksandrovich Sholokhov",
+  "genre": "Novel"
+}
+
+###
+
+GET http://localhost:8080/api/books/getByAuthor/Ivan Turgenev
+
+###
+
+GET http://localhost:8080/api/books/all
+
+###
+
+
+DELETE http://localhost:8080/api/books/delete?author=Fyodor Dostoyevski&title=Crime and Punishment
