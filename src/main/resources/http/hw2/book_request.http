@@ -1,0 +1,25 @@
+//Книга может быть добавлена
+POST http://localhost:8080/api/books/add
+Content-Type: application/json
+
+{
+  "name": "Книга",
+  "authorId" : "1",
+  "genreIds" : ["1"]
+}
+
+###
+//Книга может быть удалена из списка библиотеки (но только если она не у пользователя) по ID
+DELETE http://localhost:8080/api/books/delete/3
+
+###
+//Книге можно присвоить новый жанр, или удалить один из имеющихся
+PUT http://localhost:8080/api/books/addOrRemoveGenre?genreId=2&bookId=2
+
+###
+//Можно получить список всех книг с фильтром по автору (По любой комбинации трёх полей сущности автор.
+GET http://localhost:8080/api/books/getByAuthor?firstName=Федор
+
+###
+//Можно получить список книг по жанру.
+GET http://localhost:8080/api/books/getByGenre/2

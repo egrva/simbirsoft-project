@@ -1,4 +1,4 @@
-package ru.aegorova.simbirsoftproject;
+package ru.aegorova.simbirsoftproject.hw1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest {
+public class PersonControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
