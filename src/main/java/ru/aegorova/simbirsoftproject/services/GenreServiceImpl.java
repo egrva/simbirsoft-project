@@ -1,6 +1,5 @@
 package ru.aegorova.simbirsoftproject.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aegorova.simbirsoftproject.dto.GenreDto;
 import ru.aegorova.simbirsoftproject.mappers.GenreMapper;
@@ -14,10 +13,13 @@ import java.util.stream.Collectors;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    @Autowired
-    private GenreRepository genreRepository;
-    @Autowired
-    private GenreMapper genreMapper;
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
+
+    public GenreServiceImpl(GenreRepository genreRepository, GenreMapper genreMapper) {
+        this.genreRepository = genreRepository;
+        this.genreMapper = genreMapper;
+    }
 
     @Override
     public List<GenreDto> getAllGenres() {

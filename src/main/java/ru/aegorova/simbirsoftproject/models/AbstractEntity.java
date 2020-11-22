@@ -17,10 +17,10 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public abstract class AbstractEntity implements Serializable {
 
-    Long id;
-    ZonedDateTime created;
-    ZonedDateTime updated;
-    Long version;
+    private Long id;
+    private ZonedDateTime created;
+    private ZonedDateTime updated;
+    private Long version;
 
     AbstractEntity(Long id) {
         this.id = id;

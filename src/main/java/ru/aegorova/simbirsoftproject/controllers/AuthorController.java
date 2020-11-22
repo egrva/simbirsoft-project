@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping("/api/authors")
 public class AuthorController {
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
+
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     //Можно получить список всех авторов.
     @GetMapping("/getAll")
@@ -43,10 +46,12 @@ public class AuthorController {
     @DeleteMapping("/delete/{id}")
     @JsonView(Views.Internal.class)
     public ResponseEntity<?> deleteAuthor(@PathVariable Long id) {
-        if (authorService.deleteAuthor(id))
+        if (authorService.deleteAuthor(id)) {
             return ResponseEntity.ok().build();
-        else return ResponseEntity.badRequest().body("Вы не можете удалить этого автора, так как его книги " +
-                "все еще у пользователей");
+        } else {
+            return ResponseEntity.badRequest().body("Вы не можете удалить этого автора, так как его книги " +
+                    "все еще у пользователей");
+        }
 
     }
 }

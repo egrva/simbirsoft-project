@@ -1,6 +1,5 @@
 package ru.aegorova.simbirsoftproject.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aegorova.simbirsoftproject.dto.AuthorDto;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
@@ -17,17 +16,20 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    @Autowired
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
+    private final BookMapper bookMapper;
+    private final LibraryCardRepository libraryCardRepository;
 
-    @Autowired
-    private AuthorMapper authorMapper;
-
-    @Autowired
-    private BookMapper bookMapper;
-
-    @Autowired
-    private LibraryCardRepository libraryCardRepository;
+    public AuthorServiceImpl(AuthorRepository authorRepository
+            , AuthorMapper authorMapper
+            , BookMapper bookMapper
+            , LibraryCardRepository libraryCardRepository) {
+        this.authorRepository = authorRepository;
+        this.authorMapper = authorMapper;
+        this.bookMapper = bookMapper;
+        this.libraryCardRepository = libraryCardRepository;
+    }
 
     @Override
     public List<AuthorDto> getAllAuthors() {

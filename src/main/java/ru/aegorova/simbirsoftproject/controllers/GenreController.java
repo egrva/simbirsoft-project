@@ -15,8 +15,11 @@ import java.util.Map;
 @RequestMapping("/api/genres")
 public class GenreController {
 
-    @Autowired
-    private GenreService genreService;
+    private final GenreService genreService;
+
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     //Просмотр всех жанров.
     @GetMapping("/getAll")

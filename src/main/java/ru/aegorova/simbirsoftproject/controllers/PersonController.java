@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
+
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
 
     //Пользователь может быть добавлен.
     @PostMapping("/add")
@@ -36,10 +39,12 @@ public class PersonController {
     @DeleteMapping("/deleteById/{id}")
     @JsonView(Views.Public.class)
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
-        if (personService.deleteUserById(id))
+        if (personService.deleteUserById(id)) {
             return ResponseEntity.ok().build();
-        else return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
-                "так как его не существует в бд");
+        } else {
+            return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
+                    "так как его не существует в бд");
+        }
     }
 
     //Пользователь или пользователи могут быть удалены по ФИО
@@ -48,10 +53,12 @@ public class PersonController {
     public ResponseEntity<?> deleteUserByFio(@RequestParam String firstName
             , @RequestParam String lastName
             , @RequestParam String middleName) {
-        if (personService.deleteUserByFio(firstName, lastName, middleName))
+        if (personService.deleteUserByFullName(firstName, lastName, middleName)) {
             return ResponseEntity.ok().build();
-        else return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
-                "так как его не существует в бд");
+        } else {
+            return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
+                    "так как его не существует в бд");
+        }
     }
 
     //Получить список всех взятых пользователем книг

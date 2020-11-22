@@ -1,6 +1,5 @@
 package ru.aegorova.simbirsoftproject.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
@@ -19,17 +18,20 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements BookService {
 
-    @Autowired
-    private BookMapper bookMapper;
+    private final BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    private final LibraryCardRepository libraryCardRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
-    private GenreRepository genreRepository;
-
-    @Autowired
-    private LibraryCardRepository libraryCardRepository;
+    public BookServiceImpl(BookMapper bookMapper
+            , BookRepository bookRepository
+            , GenreRepository genreRepository
+            , LibraryCardRepository libraryCardRepository) {
+        this.bookMapper = bookMapper;
+        this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
+        this.libraryCardRepository = libraryCardRepository;
+    }
 
     @Override
     public Set<BookDto> addBook(BookDto bookDto) {
@@ -43,8 +45,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Boolean deleteBook(Long id) {
-        if (libraryCardRepository.existsByBook_Id(id))
+        if (libraryCardRepository.existsByBook_Id(id)) {
             return false;
+        }
         else {
             bookRepository.deleteById(id);
             return true;
@@ -61,10 +64,12 @@ public class BookServiceImpl implements BookService {
     public BookDto addOrDeleteGenre(Long bookId, Long genreId) {
         Book book = bookRepository.getOne(bookId);
         Genre genre = genreRepository.getOne(genreId);
-        if (book.getGenres().contains(genre))
+        if (book.getGenres().contains(genre)) {
             book.getGenres().remove(genre);
-        else
+        }
+        else {
             book.getGenres().add(genre);
+        }
         return bookMapper.toDto(bookRepository.save(book));
     }
 

@@ -1,6 +1,5 @@
 package ru.aegorova.simbirsoftproject.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
 import ru.aegorova.simbirsoftproject.dto.LibraryCardDto;
@@ -21,20 +20,23 @@ import java.util.stream.Collectors;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+    private final LibraryCardRepository libraryCardRepository;
+    private final PersonMapper personMapper;
+    private final BookMapper bookMapper;
+    private final LibraryCardMapper libraryCardMapper;
 
-    @Autowired
-    private LibraryCardRepository libraryCardRepository;
-
-    @Autowired
-    private PersonMapper personMapper;
-
-    @Autowired
-    private BookMapper bookMapper;
-
-    @Autowired
-    private LibraryCardMapper libraryCardMapper;
+    public PersonServiceImpl(PersonRepository personRepository
+            , LibraryCardRepository libraryCardRepository
+            , PersonMapper personMapper
+            , BookMapper bookMapper
+            , LibraryCardMapper libraryCardMapper) {
+        this.personRepository = personRepository;
+        this.libraryCardRepository = libraryCardRepository;
+        this.personMapper = personMapper;
+        this.bookMapper = bookMapper;
+        this.libraryCardMapper = libraryCardMapper;
+    }
 
     @Override
     public PersonDto addPerson(PersonDto personDto) {
@@ -63,8 +65,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Boolean deleteUserByFio(String firstName, String lastName, String middleName) {
-        Set<Person> persons = personRepository.findPersonByFio(firstName, lastName, middleName);
+    public Boolean deleteUserByFullName(String firstName, String lastName, String middleName) {
+        Set<Person> persons = personRepository.findPersonByFullName(firstName, lastName, middleName);
         if (!persons.isEmpty()) {
             personRepository.deleteAll(persons);
             return true;

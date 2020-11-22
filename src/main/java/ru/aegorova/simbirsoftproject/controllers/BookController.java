@@ -1,7 +1,6 @@
 package ru.aegorova.simbirsoftproject.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
@@ -14,8 +13,11 @@ import java.util.Set;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     //Книга может быть добавлена
     @PostMapping("/add")
@@ -28,10 +30,12 @@ public class BookController {
     @DeleteMapping("/delete/{id}")
     @JsonView(Views.Internal.class)
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-        if (bookService.deleteBook(id))
+        if (bookService.deleteBook(id)) {
             return ResponseEntity.ok().build();
-        else return ResponseEntity.badRequest().body("Вы не можете удалить книгу из библиотеки, так как " +
-                "сейчас она находится у пользователя");
+        } else {
+            return ResponseEntity.badRequest().body("Вы не можете удалить книгу из библиотеки, так как " +
+                    "сейчас она находится у пользователя");
+        }
     }
 
     //Книге можно присвоить новый жанр, или удалить один из имеющихся

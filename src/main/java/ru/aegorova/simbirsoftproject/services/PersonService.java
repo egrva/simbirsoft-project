@@ -17,7 +17,7 @@ public interface PersonService {
     Boolean deleteUserById(Long personId);
 
     //Пользователь или пользователи могут быть удалены по ФИО
-    Boolean deleteUserByFio(String firstName, String lastName, String middleName);
+    Boolean deleteUserByFullName(String firstName, String lastName, String middleName);
 
     //Получить список всех взятых пользователем книг
     List<BookDto> getBooksByPersonId(Long personId);
