@@ -2,32 +2,28 @@ package ru.aegorova.simbirsoftproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.aegorova.simbirsoftproject.utils.Views;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Book {
+@AllArgsConstructor
+public abstract class HumanAbstractDto extends AbstractDto {
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Book's title cannot be null")
-    private String title;
+    @NotNull(message = "First name cannot be null")
+    private String firstName;
 
     @JsonView(Views.Public.class)
-    @NotNull(message = "Book's author cannot be null")
-    private String author;
+    @NotNull(message = "Last name cannot be null")
+    private String lastName;
 
     @JsonView(Views.Internal.class)
-    @NotNull(message = "Book's genre cannot be null")
-    private String genre;
-
+    private String middleName;
 
 }

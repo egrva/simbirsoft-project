@@ -1,43 +1,28 @@
 package ru.aegorova.simbirsoftproject.services;
 
-import org.springframework.stereotype.Service;
-import ru.aegorova.simbirsoftproject.dto.Book;
+import ru.aegorova.simbirsoftproject.dto.BookDto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-@Service
-public class BookService {
+public interface BookService {
 
-    public List<Book> getBooksByAuthor(String author) {
-        return books.stream().filter(book -> book.getAuthor().equals(author)).collect(Collectors.toList());
-    }
+    //Книга может быть добавлена
+    Set<BookDto> addBook(BookDto bookDto);
 
-    public List<Book> addBook(Book book) {
-        books.add(book);
-        return books;
-    }
+    //Книга может быть удалена из списка библиотеки
+    Boolean deleteBook(Long id);
 
-    public void deleteBook(String author, String title) {
-        books.removeIf(book -> (book.getAuthor().equals(author) && book.getTitle().equals(title)));
-    }
+    // найти книгу по айди
+    BookDto getBookById(Long id);
 
-    public static List<Book> books = new ArrayList<Book>() {{
-        add(Book.builder()
-                .author("Fyodor Dostoyevski")
-                .title("Crime and Punishment")
-                .genre("Philosophical novel")
-                .build());
-        add(Book.builder()
-                .author("Ivan Turgenev")
-                .title("Fathers and Sons")
-                .genre("romance")
-                .build());
-        add(Book.builder()
-                .author("Leo Tolstoy")
-                .title("War and Peace")
-                .genre("Historical novel")
-                .build());
-    }};
+    //Книге можно присвоить новый жанр, или удалить один из имеющихся
+    BookDto addOrDeleteGenre(Long bookId, Long genreId);
+
+    //Можно получить список всех книг с фильтром по автору
+    Set<BookDto> getBookByAuthor(String firstName, String lastName, String middleNam);
+
+    //Можно получить список книг по жанру
+    Set<BookDto> getBookByGenre(Long genreId);
+
 }
+
