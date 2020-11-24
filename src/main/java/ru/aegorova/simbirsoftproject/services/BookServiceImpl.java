@@ -10,7 +10,10 @@ import ru.aegorova.simbirsoftproject.models.Genre;
 import ru.aegorova.simbirsoftproject.repositories.BookRepository;
 import ru.aegorova.simbirsoftproject.repositories.GenreRepository;
 import ru.aegorova.simbirsoftproject.repositories.LibraryCardRepository;
+import ru.aegorova.simbirsoftproject.utils.BookFilter;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,26 +41,25 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.toEntity(bookDto);
         int i = 0;
         bookRepository.save(book);
-        return bookRepository.findAll().stream().map(
-                b -> bookMapper.toDto(b)
-        ).collect(Collectors.toSet());
+        return bookRepository.findAll()
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toSet());
     }
 
     @Override
-    public Boolean deleteBook(Long id) {
+    public void deleteBook(Long id) {
         if (libraryCardRepository.existsByBook_Id(id)) {
-            return false;
-        }
-        else {
+            throw new IllegalArgumentException("Вы не можете удалить книгу из библиотеки, так как " +
+                    "сейчас она находится у пользователя");
+        } else {
             bookRepository.deleteById(id);
-            return true;
         }
     }
 
     @Override
     public BookDto getBookById(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
-        return optionalBook.map(book -> bookMapper.toDto(book)).orElse(null);
+        return optionalBook.map(bookMapper::toDto).orElse(null);
     }
 
     @Override
@@ -66,8 +68,7 @@ public class BookServiceImpl implements BookService {
         Genre genre = genreRepository.getOne(genreId);
         if (book.getGenres().contains(genre)) {
             book.getGenres().remove(genre);
-        }
-        else {
+        } else {
             book.getGenres().add(genre);
         }
         return bookMapper.toDto(bookRepository.save(book));
@@ -80,13 +81,24 @@ public class BookServiceImpl implements BookService {
         book.setAuthor(author);
         Example<Book> bookExample = Example.of(book);
         return bookRepository.findAll(bookExample)
-                .stream().map(b -> bookMapper.toDto(b)).collect(Collectors.toSet());
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<BookDto> getBookByGenre(Long genreId) {
         return bookRepository.findAllByGenresContains(genreRepository.getOne(genreId))
-                .stream().map(book -> bookMapper.toDto(book)).collect(Collectors.toSet());
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toSet());
     }
 
+    @Override
+    public List<BookDto> findByGenreAndPublicationDate(Long genreId, LocalDate publicationDate, String bookFilter) {
+        return bookRepository.findByGenreAndPublicationDate(
+                genreId != null ? genreRepository.findById(genreId).orElse(null) : null
+                , publicationDate
+                , bookFilter != null ? BookFilter.valueOf(bookFilter) : null)
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

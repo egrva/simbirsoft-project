@@ -2,6 +2,8 @@ package ru.aegorova.simbirsoftproject.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.GenreDto;
@@ -45,9 +47,13 @@ public class GenreController {
     //Удалить жанр
     @DeleteMapping("/delete/{genreId}")
     @JsonView(Views.Public.class)
-    public ResponseEntity<?> deleteGenreById(@PathVariable Long genreId) {
+    public void deleteGenreById(@PathVariable Long genreId) {
         genreService.deleteGenreById(genreId);
-        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handle(IllegalArgumentException e) {
+        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
 }

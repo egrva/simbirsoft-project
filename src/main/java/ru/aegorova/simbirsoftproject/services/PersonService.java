@@ -14,10 +14,10 @@ public interface PersonService {
     PersonDto updatePerson(PersonDto personDto);
 
     //Пользователь может быть удалён по ID
-    Boolean deleteUserById(Long personId);
+    void deleteUserById(Long personId);
 
     //Пользователь или пользователи могут быть удалены по ФИО
-    Boolean deleteUserByFullName(String firstName, String lastName, String middleName);
+    void deleteUserByFullName(String firstName, String lastName, String middleName);
 
     //Получить список всех взятых пользователем книг
     List<BookDto> getBooksByPersonId(Long personId);
@@ -27,4 +27,6 @@ public interface PersonService {
 
     //Пользователь может вернуть книгу
     PersonDto deleteBookToPerson(Long personId, Long bookId);
+
+    PersonDto getCurrentPerson();
 }

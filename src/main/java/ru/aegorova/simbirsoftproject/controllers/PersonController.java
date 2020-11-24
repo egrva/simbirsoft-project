@@ -2,6 +2,8 @@ package ru.aegorova.simbirsoftproject.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
@@ -21,12 +23,28 @@ public class PersonController {
         this.personService = personService;
     }
 
+    /*
     //Пользователь может быть добавлен.
     @PostMapping("/add")
     @JsonView(Views.Public.class)
     public PersonDto addUser(@RequestBody PersonDto personDto) {
         return personService.addPerson(personDto);
     }
+    //Пользователь может быть удалён по ID
+    @DeleteMapping("/deleteById/{id}")
+    @JsonView(Views.Public.class)
+    public void deleteUserById(@PathVariable Long id) {
+        personService.deleteUserById(id);
+    }
+    //Пользователь или пользователи могут быть удалены по ФИО
+    @DeleteMapping("/deleteByFullName")
+    @JsonView(Views.Public.class)
+    public void deleteUserByFullName(@RequestParam String firstName
+            , @RequestParam String lastName
+            , @RequestParam String middleName) {
+        personService.deleteUserByFullName(firstName, lastName, middleName);
+    }
+    */
 
     //Информация о пользователе может быть изменена (POST)
     @PostMapping("/update")
@@ -35,51 +53,30 @@ public class PersonController {
         return personService.updatePerson(personDto);
     }
 
-    //Пользователь может быть удалён по ID
-    @DeleteMapping("/deleteById/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
-        if (personService.deleteUserById(id)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
-                    "так как его не существует в бд");
-        }
-    }
-
-    //Пользователь или пользователи могут быть удалены по ФИО
-    @DeleteMapping("/deleteByFio")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<?> deleteUserByFio(@RequestParam String firstName
-            , @RequestParam String lastName
-            , @RequestParam String middleName) {
-        if (personService.deleteUserByFullName(firstName, lastName, middleName)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().body("Вы не можете удалить данного пользователя," +
-                    "так как его не существует в бд");
-        }
-    }
-
     //Получить список всех взятых пользователем книг
-    @GetMapping("/getBooks/{personId}")
+    @GetMapping("/getBooks")
     @JsonView(Views.Public.class)
-    public List<BookDto> getAllBooksByPerson(@PathVariable Long personId) {
-        return personService.getBooksByPersonId(personId);
+    public List<BookDto> getAllBooksByPerson() {
+        return personService.getBooksByPersonId(personService.getCurrentPerson().getId());
     }
 
     //Пользователь может взять книгу
     @PutMapping("/addBook")
     @JsonView(Views.Public.class)
-    public PersonDto addBookToPerson(@RequestParam Long personId, @RequestParam Long bookId) {
-        return personService.addBookToPerson(personId, bookId);
+    public PersonDto addBookToPerson(@RequestParam Long bookId) {
+        return personService.addBookToPerson(personService.getCurrentPerson().getId(), bookId);
     }
 
     //Пользователь может вернуть книгу
     @PutMapping("/returnBook")
     @JsonView(Views.Public.class)
-    public PersonDto returnBookFromPerson(@RequestParam Long personId, @RequestParam Long bookId) {
-        return personService.deleteBookToPerson(personId, bookId);
+    public PersonDto returnBookFromPerson(@RequestParam Long bookId) {
+        return personService.deleteBookToPerson(personService.getCurrentPerson().getId(), bookId);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handle(IllegalArgumentException e) {
+        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
 }

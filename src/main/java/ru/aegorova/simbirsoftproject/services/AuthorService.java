@@ -3,6 +3,7 @@ package ru.aegorova.simbirsoftproject.services;
 import ru.aegorova.simbirsoftproject.dto.AuthorDto;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AuthorService {
@@ -16,5 +17,12 @@ public interface AuthorService {
     AuthorDto addAuthor(AuthorDto authorDto);
 
     //Удалить автора
-    Boolean deleteAuthor(Long authorId);
+    void deleteAuthor(Long authorId);
+
+    //кастомный поиск
+    List<AuthorDto> findByFullNameAndCreationDate(LocalDate from
+            , LocalDate to
+            , String firstName
+            , String lastName
+            , String middleName);
 }
