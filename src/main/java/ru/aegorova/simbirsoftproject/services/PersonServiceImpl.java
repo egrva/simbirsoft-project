@@ -1,5 +1,7 @@
 package ru.aegorova.simbirsoftproject.services;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
 import ru.aegorova.simbirsoftproject.dto.LibraryCardDto;
@@ -55,31 +57,26 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Boolean deleteUserById(Long personId) {
-        if (personRepository.existsById(personId)) {
-            personRepository.deleteById(personId);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteUserById(Long personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new IllegalArgumentException("Вы не можете удалить данного пользователя," +
+                        "так как его не существует в бд"));
+        personRepository.delete(person);
     }
 
     @Override
-    public Boolean deleteUserByFullName(String firstName, String lastName, String middleName) {
-        Set<Person> persons = personRepository.findPersonByFullName(firstName, lastName, middleName);
-        if (!persons.isEmpty()) {
-            personRepository.deleteAll(persons);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteUserByFullName(String firstName, String lastName, String middleName) {
+        Person person = personRepository.findByFirstNameAndLastNameAndMiddleName(firstName, lastName, middleName)
+                .orElseThrow(() -> new IllegalArgumentException("Вы не можете удалить данного пользователя," +
+                        "так как его не существует в бд"));
+        personRepository.delete(person);
     }
 
     @Override
     public List<BookDto> getBooksByPersonId(Long personId) {
-        return libraryCardRepository.findBooksByPerson(personId).stream().map(
-                book -> bookMapper.toDto(book)
-        ).collect(Collectors.toList());
+        return libraryCardRepository.findBooksByPerson(personId)
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -96,4 +93,14 @@ public class PersonServiceImpl implements PersonService {
         return personMapper.toDto(personRepository.getOne(personId));
     }
 
+    @Override
+    public PersonDto getCurrentPerson() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return personRepository.findByUserLogin(((UserDetails) principal).getUsername())
+                    .map(personMapper::toDto)
+                    .orElseThrow(() -> new IllegalArgumentException("Данного пользователя нет в системе"));
+        }
+        throw new IllegalArgumentException("Данный пользователь не залогинен");
+    }
 }

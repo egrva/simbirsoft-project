@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Setter
@@ -23,6 +25,9 @@ public class Book extends AbstractEntity {
     private Author author;
     private Set<Genre> genres;
     private Set<LibraryCard> libraryCards;
+    private LocalDate libraryDate;
+    private LocalDate publicationDate;
+
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,6 +46,16 @@ public class Book extends AbstractEntity {
     @Column(name = "name")
     public String getName() {
         return name;
+    }
+
+    @Column(name = "library_date")
+    public LocalDate getLibraryDate() {
+        return libraryDate;
+    }
+
+    @Column(name = "publication_date")
+    public LocalDate getPublicationDate() {
+        return publicationDate;
     }
 
     @JsonIgnore

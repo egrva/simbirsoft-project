@@ -9,6 +9,7 @@ import ru.aegorova.simbirsoftproject.models.Book;
 import ru.aegorova.simbirsoftproject.repositories.AuthorRepository;
 import ru.aegorova.simbirsoftproject.repositories.LibraryCardRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,16 +34,16 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorDto> getAllAuthors() {
-        return authorRepository.findAll().stream().map(
-                author -> authorMapper.toDto(author)
-        ).collect(Collectors.toList());
+        return authorRepository.findAll()
+                .stream().map(authorMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<BookDto> getAllBooksByAuthor(Long authorId) {
-        return authorRepository.findBooksByAuthor(authorId).stream().map(
-                book -> bookMapper.toDto(book)
-        ).collect(Collectors.toList());
+        return authorRepository.findBooksByAuthor(authorId)
+                .stream().map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -51,18 +52,27 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Boolean deleteAuthor(Long authorId) {
+    public void deleteAuthor(Long authorId) {
         Set<Book> bookSet = authorRepository.findBooksByAuthor(authorId);
-        boolean flag = true;
         for (Book book : bookSet) {
             if (libraryCardRepository.existsByBook_Id(book.getId())) {
-                flag = false;
-                break;
+                throw new IllegalArgumentException("Вы не можете удалить этого автора, так как его книги " +
+                        "все еще у пользователей");
             }
         }
-        if (flag) {
-            authorRepository.deleteById(authorId);
-        }
-        return flag;
+        authorRepository.deleteById(authorId);
+    }
+
+    @Override
+    public List<AuthorDto> findByFullNameAndCreationDate(LocalDate from
+            , LocalDate to
+            , String firstName
+            , String lastName
+            , String middleName) {
+        return authorRepository.findByFullNameAndCreationDate(from
+                , to
+                , firstName, lastName, middleName)
+                .stream().map(authorMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

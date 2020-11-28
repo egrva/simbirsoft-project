@@ -1,12 +1,18 @@
 package ru.aegorova.simbirsoftproject.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aegorova.simbirsoftproject.dto.BookDto;
 import ru.aegorova.simbirsoftproject.services.BookService;
 import ru.aegorova.simbirsoftproject.utils.Views;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,13 +35,8 @@ public class BookController {
     //Книга может быть удалена из списка библиотеки (но только если она не у пользователя) по ID
     @DeleteMapping("/delete/{id}")
     @JsonView(Views.Internal.class)
-    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-        if (bookService.deleteBook(id)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().body("Вы не можете удалить книгу из библиотеки, так как " +
-                    "сейчас она находится у пользователя");
-        }
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
     }
 
     //Книге можно присвоить новый жанр, или удалить один из имеющихся
@@ -60,4 +61,17 @@ public class BookController {
         return bookService.getBookByGenre(genreId);
     }
 
+    //кастомный поиск
+    @GetMapping("/findByGenreAndPublicationDate")
+    public List<BookDto> getBooksByGenreAndPublicationDate(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate publicationDate
+            , @RequestParam(required = false) Long genreId
+            , @RequestParam(required = false) String bookFilter) {
+        return bookService.findByGenreAndPublicationDate(genreId, publicationDate, bookFilter);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handle(IllegalArgumentException e) {
+        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 }

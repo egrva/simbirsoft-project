@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.aegorova.simbirsoftproject.models.Person;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -18,5 +19,11 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     Set<Person> findPersonByFullName(@Param("firstName") String firstName
             , @Param("lastName") String lastName
             , @Param("middleName") String middleName);
+
+    Optional<Person> findByFirstNameAndLastNameAndMiddleName(String firstName
+            , String lastName
+            , String middleName);
+
+    Optional<Person> findByUserLogin(String login);
 
 }
