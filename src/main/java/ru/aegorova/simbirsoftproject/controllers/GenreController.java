@@ -50,10 +50,4 @@ public class GenreController {
     public void deleteGenreById(@PathVariable Long genreId) {
         genreService.deleteGenreById(genreId);
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handle(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
 }

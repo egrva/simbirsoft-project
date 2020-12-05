@@ -69,9 +69,4 @@ public class BookController {
             , @RequestParam(required = false) String bookFilter) {
         return bookService.findByGenreAndPublicationDate(genreId, publicationDate, bookFilter);
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handle(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
 }
