@@ -73,10 +73,4 @@ public class PersonController {
     public PersonDto returnBookFromPerson(@RequestParam Long bookId) {
         return personService.deleteBookToPerson(personService.getCurrentPerson().getId(), bookId);
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handle(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
 }

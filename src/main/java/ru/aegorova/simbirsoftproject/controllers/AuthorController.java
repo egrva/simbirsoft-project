@@ -55,17 +55,12 @@ public class AuthorController {
 
     //кастомный поиск
     @GetMapping("/findByFullNameAndCreationDate")
-    public List<AuthorDto> getBooksByGenreAndPublicationDate(
+    public List<AuthorDto> getAuthorsByFullNameAndPublicationDate(
             @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate from
             , @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate to
             , @RequestParam(required = false) String firstName
             , @RequestParam(required = false) String lastName
             , @RequestParam(required = false) String middleName) {
         return authorService.findByFullNameAndCreationDate(from, to, firstName, lastName, middleName);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handle(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
