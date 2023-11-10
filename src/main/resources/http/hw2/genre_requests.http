@@ -1,0 +1,25 @@
+//genres
+//добавить жанр
+POST http://localhost:8080/api/genres/add
+Content-Type: application/json
+
+{
+  "genreName": "Novel"
+}
+
+###
+// список жанров
+GET http://localhost:8080/api/genres/getAll
+
+###
+// статистика
+POST http://localhost:8080/api/genres/statistic
+Content-Type: application/json
+
+{
+  "genreName": "трагедия"
+}
+
+###
+//удалить жанр
+DELETE http://localhost:8080/api/genres/delete/1

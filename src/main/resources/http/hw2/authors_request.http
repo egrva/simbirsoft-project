@@ -1,0 +1,23 @@
+//Можно получить список всех авторов.
+GET http://localhost:8080/api/authors/getAll
+
+###
+
+//Можно получить список книг автора
+GET http://localhost:8080/api/authors/getBooks/1
+
+###
+
+//Добавить автора
+POST http://localhost:8080/api/authors/add
+Content-Type: application/json
+
+{
+  "firstName": "Антон",
+  "middleName": "Павлович",
+  "lastName": "Чехов"
+}
+
+###
+//Удалить автора
+DELETE http://localhost:8080/api/authors/delete/1

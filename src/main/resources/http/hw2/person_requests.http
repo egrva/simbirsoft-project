@@ -1,0 +1,43 @@
+//Пользователь может быть добавлен.
+POST http://localhost:8080/api/users/add
+Content-Type: application/json
+
+{
+  "firstName": "Книга",
+  "lastName" : "1",
+  "middleName" : "1",
+  "birthDate" : "16-12-1999"
+}
+
+###
+//Информация о пользователе может быть изменена (POST)
+POST http://localhost:8080/api/users/update
+Content-Type: application/json
+
+{
+  "id" : "20",
+  "firstName": "Книга",
+  "lastName" : "Имя",
+  "middleName" : "1",
+  "birthDate" : "16-12-1999"
+}
+
+###
+//Пользователь может быть удалён по ID
+DELETE http://localhost:8080/api/users/deleteById/15
+
+###
+//Пользователь или пользователи могут быть удалены по ФИО
+DELETE http://localhost:8080/api/users/deleteByFio?firstName=Книга&lastName=1&middleName=1
+
+###
+//Получить список всех взятых пользователем книг
+GET http://localhost:8080/api/users/getBooks/1
+
+###
+//Пользователь может взять книгу
+PUT http://localhost:8080/api/users/addBook?personId=1&bookId=4
+
+###
+//Пользователь может вернуть книгу
+PUT http://localhost:8080/api/users/returnBook?personId=1&bookId=4
